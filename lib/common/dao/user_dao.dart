@@ -10,6 +10,7 @@ import 'package:gsy_github_app_flutter/common/config/config.dart';
 import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 import 'package:gsy_github_app_flutter/common/dao/dao_result.dart';
 import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
+import 'package:gsy_github_app_flutter/main.dart';
 import 'package:gsy_github_app_flutter/model/Notification.dart' as Model;
 import 'package:gsy_github_app_flutter/model/SearchUserQL.dart';
 import 'package:gsy_github_app_flutter/model/User.dart';
@@ -25,17 +26,19 @@ import 'package:redux/redux.dart';
 class UserDao {
   static oauth(code, store) async {
     httpManager.clearAuthorization();
-
+    logger.i('oauth code2:$code');
     var res = await httpManager.netFetch(
       "https://github.com/login/oauth/access_token?"
       "client_id=${NetConfig.CLIENT_ID}"
       "&client_secret=${NetConfig.CLIENT_SECRET}"
+      // "&redirect_uri=${NetConfig.REDIRECT_URI}"
       "&code=${code}",
       null,
       null,
       new Options(method: "POST"),
     );
     dynamic resultData = null;
+    logger.i('res:$res');
     if (res != null && res.result) {
       print("#### ${res.data}");
       var result = Uri.parse("gsy://oauth?" + res.data);

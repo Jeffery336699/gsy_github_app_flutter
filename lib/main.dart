@@ -6,10 +6,38 @@ import 'package:gsy_github_app_flutter/app.dart';
 import 'package:gsy_github_app_flutter/env/config_wrapper.dart';
 import 'package:gsy_github_app_flutter/env/env_config.dart';
 import 'package:gsy_github_app_flutter/page/error_page.dart';
+import 'package:logger/logger.dart';
 
 import 'env/dev.dart';
 
+Logger logger = Logger(
+  printer: PrettyPrinter(
+    methodCount: 0,
+    // 不显示方法调用堆栈
+    errorMethodCount: 0,
+    // 错误时也不显示方法堆栈
+    lineLength: 120,
+    // 缩短边框长度
+    colors: true,
+    // 颜色
+    printEmojis: false,
+    // 禁用表情符号
+    printTime: false,
+    // 禁用时间戳
+    excludeBox: {
+      // 禁用所有级别的边框
+      Level.trace: true,
+      Level.debug: true,
+      Level.info: true,
+      Level.warning: true,
+      Level.error: true,
+      Level.fatal: true,
+    },
+  ),
+);
+
 void main() {
+  logger.i('App Start 有没---------------');
   runZonedGuarded(() {
     ErrorWidget.builder = (FlutterErrorDetails details) {
       Zone.current.handleUncaughtError(details.exception, details.stack!);

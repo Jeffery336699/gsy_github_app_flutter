@@ -276,7 +276,7 @@ class Address {
     return "https://github.com/login/oauth/authorize?client_id"
         "=${NetConfig.CLIENT_ID}&state=app&"
         "scope=user,repo,gist,notifications,read:org,workflow&"
-        "redirect_uri=gsygithubapp://authed";
+        "redirect_uri=${NetConfig.REDIRECT_URI}";
   }
 
   ///趋势 get

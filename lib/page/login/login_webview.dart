@@ -2,8 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:gsy_github_app_flutter/common/config/ignoreConfig.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
+import 'package:gsy_github_app_flutter/main.dart';
 import 'package:gsy_github_app_flutter/widget/gsy_common_option_widget.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -65,7 +67,8 @@ class _LoginWebViewState extends State<LoginWebView> {
               javascriptMode: JavascriptMode.unrestricted,
               initialMediaPlaybackPolicy: AutoMediaPlaybackPolicy.always_allow,
               navigationDelegate: (NavigationRequest navigation) {
-                if (navigation.url.startsWith("gsygithubapp://authed")) {
+                logger.i("navigation url ${navigation.url}");
+                if (navigation.url.startsWith(NetConfig.REDIRECT_URI)) {
                   var code = Uri.parse(navigation.url).queryParameters["code"];
                   print("code ${code}");
                   Navigator.of(context).pop(code);

@@ -6,6 +6,7 @@ import 'package:gsy_github_app_flutter/common/local/local_storage.dart';
 import 'package:gsy_github_app_flutter/common/localization/default_localizations.dart';
 import 'package:gsy_github_app_flutter/common/net/address.dart';
 import 'package:gsy_github_app_flutter/common/utils/navigator_utils.dart';
+import 'package:gsy_github_app_flutter/main.dart';
 import 'package:gsy_github_app_flutter/redux/gsy_state.dart';
 import 'package:gsy_github_app_flutter/redux/login_redux.dart';
 import 'package:gsy_github_app_flutter/common/style/gsy_style.dart';
@@ -181,27 +182,27 @@ mixin LoginBLoC on State<LoginPage> {
   }
 
   loginIn() async {
-    Fluttertoast.showToast(
-        msg: GSYLocalizations.i18n(context)!.Login_deprecated,
-        gravity: ToastGravity.CENTER,
-        toastLength: Toast.LENGTH_LONG);
-    return;
-    // if (_userName == null || _userName.isEmpty) {
-    //   return;
-    // }
-    // if (_password == null || _password.isEmpty) {
-    //   return;
-    // }
-    //
-    // ///通过 redux 去执行登陆流程
-    // StoreProvider.of<GSYState>(context)
-    //     .dispatch(LoginAction(context, _userName, _password));
+    // Fluttertoast.showToast(
+    //     msg: GSYLocalizations.i18n(context)!.Login_deprecated,
+    //     gravity: ToastGravity.CENTER,
+    //     toastLength: Toast.LENGTH_LONG);
+    // return;
+    if (_userName == null || _userName!.isEmpty) {
+      return;
+    }
+    if (_password == null || _password!.isEmpty) {
+      return;
+    }
+
+    ///通过 redux 去执行登陆流程
+    StoreProvider.of<GSYState>(context)
+        .dispatch(LoginAction(context, _userName, _password));
   }
 
   oauthLogin() async {
     String? code = await NavigatorUtils.goLoginWebView(context,
         Address.getOAuthUrl(), "${GSYLocalizations.i18n(context)!.oauth_text}");
-
+    logger.i('oauth code: $code');
     if (code != null && code.length > 0) {
       ///通过 redux 去执行登陆流程
       StoreProvider.of<GSYState>(context).dispatch(OAuthAction(context, code));
