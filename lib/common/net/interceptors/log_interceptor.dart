@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
+import 'package:get/get.dart' hide Response;
 import 'package:gsy_github_app_flutter/common/config/config.dart';
 
 /**
@@ -20,11 +21,11 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onRequest(RequestOptions options, handler) async {
     if (Config.DEBUG!) {
-      print("请求url：${options.path} ${options.method}");
+      Get.log("请求url：${options.path} ${options.method}");
       options.headers.forEach((k, v) => options.headers[k] = v ?? "");
-      print('请求头: ' + options.headers.toString());
+      Get.log('请求头: ' + options.headers.toString());
       if (options.data != null) {
-        print('请求参数: ' + options.data.toString());
+        Get.log('请求参数: ' + options.data.toString());
       }
     }
     try {
@@ -51,7 +52,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onResponse(Response response, handler) async {
     if (Config.DEBUG!) {
-      print('返回参数: ' + response.toString());
+      // Get.log('返回参数: ' + response.toString());
     }
     if (response.data is Map || response.data is List) {
       try {
@@ -86,8 +87,8 @@ class LogsInterceptors extends InterceptorsWrapper {
   @override
   onError(DioError err, handler) async {
     if (Config.DEBUG!) {
-      print('请求异常: ' + err.toString());
-      print('请求异常信息: ' + (err.response?.toString() ?? ""));
+      Get.log('请求异常: ' + err.toString());
+      Get.log('请求异常信息: ' + (err.response?.toString() ?? ""));
     }
     try {
       addLogic(sHttpErrorUrl, err.requestOptions.path);
@@ -101,7 +102,7 @@ class LogsInterceptors extends InterceptorsWrapper {
   }
 
   static addLogic(List list, data) {
-    if (list.length > 20) {
+    if (list.length > 10) {
       list.removeAt(0);
     }
     list.add(data);

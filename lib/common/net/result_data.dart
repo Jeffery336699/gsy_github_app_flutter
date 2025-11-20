@@ -10,4 +10,6 @@ class ResultData {
   var headers;
 
   ResultData(this.data, this.result, this.code, {this.headers});
+
+  Map<String, dynamic> toJson() => {'result': result, 'code': code, 'headers': headers, 'data': data};
 }

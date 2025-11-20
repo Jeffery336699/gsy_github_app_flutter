@@ -18,12 +18,12 @@ class ResponseInterceptors extends InterceptorsWrapper {
         value = new ResultData(response.data, true, Code.SUCCESS);
       } else if (response.statusCode! >= 200 && response.statusCode! < 300) {
         value = new ResultData(response.data, true, Code.SUCCESS,
-            headers: response.headers);
+            headers: response.headers.map);
       }
     } catch (e) {
       print(e.toString() + option.path);
       value = new ResultData(response.data, false, response.statusCode,
-          headers: response.headers);
+          headers: response.headers.map);
     }
     response.data = value;
     return handler.next(response);

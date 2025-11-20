@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:gsy_github_app_flutter/common/net/code.dart';
 
 import 'dart:collection';
@@ -10,6 +13,7 @@ import 'package:gsy_github_app_flutter/common/net/interceptors/log_interceptor.d
 import 'package:gsy_github_app_flutter/common/net/interceptors/response_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/net/interceptors/token_interceptor.dart';
 import 'package:gsy_github_app_flutter/common/net/result_data.dart';
+import 'package:gsy_github_app_flutter/main.dart';
 
 ///http请求
 class HttpManager {
@@ -63,6 +67,7 @@ class HttpManager {
           e.type == DioErrorType.receiveTimeout) {
         errorResponse!.statusCode = Code.NETWORK_TIMEOUT;
       }
+      logger.e('请求出错：errorResponse.statusCode:${errorResponse?.statusCode} , e.message:${e.message}' );
       return new ResultData(
           Code.errorHandleFunction(errorResponse!.statusCode, e.message, noTip),
           false,
@@ -78,6 +83,7 @@ class HttpManager {
     if (response.data is DioError) {
       return resultError(response.data);
     }
+    Get.log("返回数据: " + jsonEncode((response.data as ResultData?)?.toJson()));
     return response.data;
   }
 
