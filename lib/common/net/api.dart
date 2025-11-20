@@ -83,7 +83,7 @@ class HttpManager {
     if (response.data is DioError) {
       return resultError(response.data);
     }
-    Get.log("返回数据: " + jsonEncode((response.data as ResultData?)?.toJson()));
+    Get.log("返回数据: by ${url}\n" + jsonEncode((response.data as ResultData?)?.toJson()));
     return response.data;
   }
 
